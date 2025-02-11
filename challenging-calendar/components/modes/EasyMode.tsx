@@ -103,7 +103,7 @@ export function EasyMode({ completed, toggleDay }: EasyModeProps) {
 
   return (
     <>
-      <div className="w-full max-w-xl mx-auto">
+      <div className="w-full max-w-xl mx-auto px-4">
         <div className="grid grid-rows-5 grid-cols-5">
           {days.map((day, index) => (
             <div
