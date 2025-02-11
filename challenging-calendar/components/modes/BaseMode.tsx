@@ -9,7 +9,32 @@ interface BaseModeProps {
   currentPage?: number
 }
 
+interface Evidence {
+  text: string
+  attachments: Array<{
+    type: 'image' | 'link'
+    url: string
+  }>
+}
+
 export function BaseMode({ days, completed, toggleDay, currentPage = 1 }: BaseModeProps) {
+  const handleSave = (evidenceString: string) => {
+    if (selectedDay) {
+      try {
+        const evidenceData = JSON.parse(evidenceString) as Evidence
+        const newEvidence = {
+          ...evidence,
+          [selectedDay]: evidenceString // Store the full JSON string
+        }
+        setEvidence(newEvidence)
+        localStorage.setItem('mediumModeEvidence', JSON.stringify(newEvidence))
+        setSelectedDay(null)
+      } catch (error) {
+        console.error('Failed to parse evidence:', error)
+      }
+    }
+  }
+
   return (
     <div className="flex justify-center animate-scale-in">
       <div className="w-[340px] md:w-[580px] lg:w-[660px] px-4 md:px-0 relative">
