@@ -2,29 +2,25 @@
 
 import { cn } from "@/lib/utils"
 
-interface CalendarGridProps {
+interface MediumModeProps {
   completed: number[]
   toggleDay: (day: number | null) => void
-  startDay: number
-  endDay: number
+  currentPage: number
 }
 
-export function CalendarGrid({ completed, toggleDay, startDay, endDay }: CalendarGridProps) {
-  const getDays = () => {
-    const days = Array(30).fill(null)
-    
-    for (let i = 0; i < (endDay - startDay + 1); i++) {
-      days[i] = startDay + i
-    }
+export function MediumMode({ completed, toggleDay, currentPage }: MediumModeProps) {
+  const startDay = (currentPage - 1) * 30 + 1
+  const endDay = Math.min(currentPage * 30, 66)
+  const days = Array(30).fill(null)
 
-    return days
+  for (let i = 0; i < (endDay - startDay + 1); i++) {
+    days[i] = startDay + i
   }
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      {/* Grid */}
       <div className="grid grid-rows-6 grid-cols-5 gap-0">
-        {getDays().map((day, index) => (
+        {days.map((day, index) => (
           <div
             key={index}
             className={cn(
@@ -51,5 +47,4 @@ export function CalendarGrid({ completed, toggleDay, startDay, endDay }: Calenda
       </div>
     </div>
   )
-}
-
+} 

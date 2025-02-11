@@ -8,6 +8,10 @@ const config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        noto: ["var(--font-noto-serif)"],
+        lora: ["var(--font-lora)"],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
@@ -37,6 +41,27 @@ const config = {
           900: '#3d3d3d',
           950: '#262626',
         },
+      },
+      keyframes: {
+        'fade-in-out': {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '10%': { opacity: '1', transform: 'translateY(0)' },
+          '90%': { opacity: '1', transform: 'translateY(0)' },
+          '100%': { opacity: '0', transform: 'translateY(10px)' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '200% 0' },
+          '100%': { backgroundPosition: '-200% 0' }
+        },
+        'pulse-subtle': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.85' }
+        }
+      },
+      animation: {
+        'fade-in-out': 'fade-in-out 2s ease-in-out',
+        shimmer: 'shimmer 8s linear infinite',
+        'pulse-subtle': 'pulse-subtle 2s ease-in-out infinite'
       },
     },
   },

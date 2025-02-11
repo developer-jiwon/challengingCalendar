@@ -1,62 +1,192 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { cn } from "@/lib/utils"
-import { ActivityCard } from "./ActivityCard"
+import { EasyMode } from "./modes/EasyMode"
+import { MediumMode } from "./modes/MediumMode"
+import { HardMode } from "./modes/HardMode"
 import { Navigation } from "./Navigation"
-import { CalendarGrid } from "./CalendarGrid"
-import { activities } from "@/lib/activities"
+
+type Difficulty = "easy" | "medium" | "hard"
+
+interface CompletedDays {
+  easy: number[]
+  medium: number[]
+  hard: number[]
+}
 
 export default function ChallengeCalendar() {
-  const [completed, setCompleted] = useState<number[]>([])
-  const [selectedDay, setSelectedDay] = useState<number | null>(null)
-  const [isNavExpanded, setIsNavExpanded] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
+  const [completed, setCompleted] = useState<CompletedDays>({
+    easy: [],
+    medium: [],
+    hard: []
+  })
+  const [difficulty, setDifficulty] = useState<Difficulty>("easy")
+  const [currentPage, setCurrentPage] = useState(1)
 
-  useEffect(() => {
-    const checkIfMobile = () => setIsMobile(window.innerWidth < 768)
-    checkIfMobile()
-    window.addEventListener("resize", checkIfMobile)
-    return () => window.removeEventListener("resize", checkIfMobile)
-  }, [])
+  const difficultyDays = {
+    easy: 21,
+    medium: 66,
+    hard: 90
+  }
 
   const toggleDay = (day: number | null) => {
     if (day === null) return
-    setCompleted((prev) => (prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]))
-    setSelectedDay(day)
+    setCompleted(prev => ({
+      ...prev,
+      [difficulty]: prev[difficulty].includes(day)
+        ? prev[difficulty].filter(d => d !== day)
+        : [...prev[difficulty], day]
+    }))
+  }
+
+  const totalPages = Math.ceil(difficultyDays[difficulty] / 30)
+
+  const renderMode = () => {
+    switch (difficulty) {
+      case "easy":
+        return <EasyMode completed={completed.easy} toggleDay={toggleDay} />
+      case "medium":
+        return <MediumMode completed={completed.medium} toggleDay={toggleDay} currentPage={currentPage} />
+      case "hard":
+        return <HardMode completed={completed.hard} toggleDay={toggleDay} currentPage={currentPage} />
+    }
+  }
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage)
   }
 
   return (
-    <div className="flex flex-col min-h-screen w-full relative">
-      <Navigation isNavExpanded={isNavExpanded} setIsNavExpanded={setIsNavExpanded} isMobile={isMobile} />
+    <div className="flex min-h-screen w-full relative font-lora">
+      <Navigation difficulty={difficulty} />
+      
+      <main className="flex-1">
+        <div className="min-h-screen w-full flex flex-col items-center justify-center">
+          <div className="w-full max-w-[1200px] px-4 sm:px-8 -ml-8">
+            <div className="flex justify-center mb-12">
+              <div className="inline-flex gap-3 bg-white/30 backdrop-blur-[2px] p-1.5 rounded-full">
+                <button
+                  onClick={() => {
+                    setDifficulty("easy")
+                    setCurrentPage(1)
+                  }}
+                  className={cn(
+                    "relative py-2 px-4 sm:px-5 rounded-full transition-all duration-500",
+                    "font-medium text-xs sm:text-sm whitespace-nowrap",
+                    "group flex items-center gap-1.5 sm:gap-2",
+                    difficulty === "easy"
+                      ? "bg-white text-burgundy-600 shadow-md"
+                      : "text-grey-600 hover:bg-white/50"
+                  )}
+                >
+                  <span className="font-noto">Easy</span>
+                  <span className={cn(
+                    "text-[10px] px-1.5 py-0.5 rounded-full transition-colors",
+                    difficulty === "easy"
+                      ? "bg-burgundy-50 text-burgundy-600"
+                      : "bg-grey-100 text-grey-500"
+                  )}>
+                    21
+                  </span>
+                  {difficulty === "easy" && (
+                    <div className="absolute inset-0 -z-10 rounded-full animate-pulse-subtle">
+                      <div className="absolute inset-0 bg-white blur-sm" />
+                    </div>
+                  )}
+                </button>
 
-      {/* Content */}
-      <div
-        className={cn(
-          "flex-1 p-4 sm:p-8 flex flex-col items-center justify-center transition-all duration-300",
-          isMobile ? (isNavExpanded ? "mt-16" : "mt-0") : isNavExpanded ? "ml-40" : "ml-0"
-        )}
-      >
-        <div className="w-full max-w-4xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-8 text-burgundy-700">
-            2025 FEB
-          </h1>
+                <button
+                  onClick={() => {
+                    setDifficulty("medium")
+                    setCurrentPage(1)
+                  }}
+                  className={cn(
+                    "relative py-2 px-4 sm:px-5 rounded-full transition-all duration-500",
+                    "font-medium text-xs sm:text-sm whitespace-nowrap",
+                    "group flex items-center gap-1.5 sm:gap-2",
+                    difficulty === "medium"
+                      ? "bg-white text-burgundy-600 shadow-md"
+                      : "text-grey-600 hover:bg-white/50"
+                  )}
+                >
+                  <span className="font-noto">Medium</span>
+                  <span className={cn(
+                    "text-[10px] px-1.5 py-0.5 rounded-full transition-colors",
+                    difficulty === "medium"
+                      ? "bg-burgundy-50 text-burgundy-600"
+                      : "bg-grey-100 text-grey-500"
+                  )}>
+                    66
+                  </span>
+                  {difficulty === "medium" && (
+                    <div className="absolute inset-0 -z-10 rounded-full animate-pulse-subtle">
+                      <div className="absolute inset-0 bg-white blur-sm" />
+                    </div>
+                  )}
+                </button>
 
-          <CalendarGrid completed={completed} toggleDay={toggleDay} />
-        </div>
+                <button
+                  onClick={() => {
+                    setDifficulty("hard")
+                    setCurrentPage(1)
+                  }}
+                  className={cn(
+                    "relative py-2 px-4 sm:px-5 rounded-full transition-all duration-500",
+                    "font-medium text-xs sm:text-sm whitespace-nowrap",
+                    "group flex items-center gap-1.5 sm:gap-2",
+                    difficulty === "hard"
+                      ? "bg-white text-burgundy-600 shadow-md"
+                      : "text-grey-600 hover:bg-white/50"
+                  )}
+                >
+                  <span className="font-noto">Hard</span>
+                  <span className={cn(
+                    "text-[10px] px-1.5 py-0.5 rounded-full transition-colors",
+                    difficulty === "hard"
+                      ? "bg-burgundy-50 text-burgundy-600"
+                      : "bg-grey-100 text-grey-500"
+                  )}>
+                    90
+                  </span>
+                  {difficulty === "hard" && (
+                    <div className="absolute inset-0 -z-10 rounded-full animate-pulse-subtle">
+                      <div className="absolute inset-0 bg-white blur-sm" />
+                    </div>
+                  )}
+                </button>
+              </div>
+            </div>
 
-        {/* Activity Card */}
-        {selectedDay && activities[selectedDay] && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <ActivityCard
-              date={selectedDay}
-              keyword={activities[selectedDay].keyword}
-              activity={activities[selectedDay].activity}
-              onClose={() => setSelectedDay(null)}
-            />
+            <div className="flex justify-center">
+              <div className="w-full max-w-4xl">
+                {renderMode()}
+              </div>
+            </div>
+
+            {difficulty !== "easy" && totalPages > 1 && (
+              <div className="flex justify-center mt-4">
+                <div className="flex gap-2">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={cn(
+                        "w-8 h-8 rounded-full font-noto",
+                        currentPage === page
+                          ? "bg-burgundy-600 text-white"
+                          : "bg-grey-100 text-burgundy-700 hover:bg-burgundy-100"
+                      )}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      </main>
     </div>
   )
 }

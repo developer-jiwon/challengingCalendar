@@ -35,7 +35,8 @@ export const activities: Activities = {
   25: { keyword: "Reflect", activity: "Write about your achievements" },
   26: { keyword: "Balance", activity: "Practice standing on one leg" },
   27: { keyword: "Laugh", activity: "Watch your favorite comedy" },
-  28: { keyword: "Dream", activity: "Visualize your ideal future" }
+  28: { keyword: "Dream", activity: "Visualize your ideal future" },
+  // ... add more activities up to day 90
 }
   
   

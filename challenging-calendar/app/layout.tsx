@@ -1,16 +1,22 @@
 import type { Metadata } from "next"
-import { Merriweather } from "next/font/google"
+import { Noto_Serif_Display, Lora } from "next/font/google"
 import "./globals.css"
 
-const merriweather = Merriweather({
+const notoSerifDisplay = Noto_Serif_Display({
   subsets: ["latin"],
-  weight: ["400", "700"],
   display: "swap",
+  variable: "--font-noto-serif",
+})
+
+const lora = Lora({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-lora",
 })
 
 export const metadata: Metadata = {
   title: "Challenge Calendar",
-  description: "Track your daily challenges and activities",
+  description: "Track your daily challenges and build better habits",
 }
 
 export default function RootLayout({
@@ -19,8 +25,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={merriweather.className}>
-      <body className="bg-grey-50 text-foreground antialiased">
+    <html lang="en" className={`${notoSerifDisplay.variable} ${lora.variable}`}>
+      <body className="bg-grey-50 text-foreground antialiased font-lora">
         {children}
       </body>
     </html>
