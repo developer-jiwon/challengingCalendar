@@ -50,8 +50,8 @@ export function ChallengeDetail({
 
         {/* Content */}
         <div className="p-4">
-          <p className="text-center mb-2">{description.en}</p>
-          <p className="text-center text-grey-600 text-sm">{description.ko}</p>
+          <p className="text-center mb-2 font-noto-display">{description.en}</p>
+          <p className="text-center text-grey-600 text-sm font-suit">{description.ko}</p>
 
           {/* Evidence Input Area */}
           <div className="mt-6 border-2 border-dashed border-grey-200 rounded-xl p-6">

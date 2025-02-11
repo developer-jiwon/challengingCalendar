@@ -20,12 +20,15 @@ export function Navigation({ difficulty }: NavigationProps) {
 
   return (
     <>
-      {/* Background Overlay */}
+      {/* Background Overlay - Made more vivid */}
       <div 
         className={cn(
-          "fixed inset-0 bg-burgundy-50/30 backdrop-blur-[2px] transition-opacity duration-300",
-          isExpanded ? "opacity-100" : "opacity-0 pointer-events-none"
+          "fixed inset-0 bg-burgundy-100/40 backdrop-blur-sm transition-all duration-300",
+          isExpanded 
+            ? "opacity-100 pointer-events-auto" 
+            : "opacity-0 pointer-events-none"
         )}
+        onClick={() => setIsExpanded(false)}
       />
 
       {/* Navigation */}
@@ -40,7 +43,9 @@ export function Navigation({ difficulty }: NavigationProps) {
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className={cn(
-            "absolute w-10 h-10 bg-white border border-grey-100 rounded-full flex items-center justify-center hover:bg-grey-50 transition-all duration-300",
+            "absolute w-10 h-10 bg-white border border-grey-100 rounded-full",
+            "flex items-center justify-center hover:bg-grey-50 transition-all duration-300",
+            "focus:outline-none focus:ring-2 focus:ring-burgundy-300",
             isExpanded 
               ? "-right-5 top-8"
               : "right-[-3.25rem] top-8"

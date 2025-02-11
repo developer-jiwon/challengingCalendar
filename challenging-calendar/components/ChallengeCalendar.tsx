@@ -63,9 +63,9 @@ export default function ChallengeCalendar() {
       
       <main className="w-full">
         <div className="min-h-screen w-full flex flex-col items-center justify-center">
-          <div className="flex flex-col items-center">
-            <div className="flex justify-center mb-12">
-              <div className="inline-flex gap-3 bg-white/30 backdrop-blur-[2px] p-1.5 rounded-full">
+          <div className="flex flex-col items-center w-full max-w-[1400px] mx-auto px-4 md:px-16">
+            <div className="flex justify-center mb-12 md:mb-16">
+              <div className="inline-flex gap-3 md:gap-4 bg-white/30 backdrop-blur-[2px] p-1.5 md:p-2 rounded-full">
                 <button
                   onClick={() => {
                     setDifficulty("easy")

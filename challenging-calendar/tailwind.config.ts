@@ -9,8 +9,9 @@ const config = {
   theme: {
     extend: {
       fontFamily: {
-        noto: ["var(--font-noto-serif)"],
-        lora: ["var(--font-lora)"],
+        'noto-display': ['var(--font-noto-serif-display)'],
+        'lora': ['var(--font-lora)'],
+        'suit': ['SUIT', 'sans-serif']
       },
       colors: {
         background: "var(--background)",

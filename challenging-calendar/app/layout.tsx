@@ -4,13 +4,11 @@ import "./globals.css"
 
 const notoSerifDisplay = Noto_Serif_Display({
   subsets: ["latin"],
-  display: "swap",
-  variable: "--font-noto-serif",
+  variable: "--font-noto-serif-display",
 })
 
 const lora = Lora({
   subsets: ["latin"],
-  display: "swap",
   variable: "--font-lora",
 })
 
@@ -26,6 +24,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${notoSerifDisplay.variable} ${lora.variable}`}>
+      <head>
+        <link 
+          href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css" 
+          rel="stylesheet"
+        />
+      </head>
       <body className="bg-grey-50 text-foreground antialiased font-lora">
         {children}
       </body>

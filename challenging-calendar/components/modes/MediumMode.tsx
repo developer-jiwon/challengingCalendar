@@ -1,6 +1,9 @@
 'use client'
 
 import { cn } from "@/lib/utils"
+import { useState } from "react"
+import { BaseMode } from "./BaseMode"
+import { ChallengeDetail } from "@/components/ChallengeDetail"
 
 interface MediumModeProps {
   completed: number[]
@@ -9,42 +12,44 @@ interface MediumModeProps {
 }
 
 export function MediumMode({ completed, toggleDay, currentPage }: MediumModeProps) {
+  const [selectedDay, setSelectedDay] = useState<number | null>(null)
+  const [evidence, setEvidence] = useState<Evidence>({})
+  
   const startDay = (currentPage - 1) * 30 + 1
-  const endDay = Math.min(currentPage * 30, 66)
-  const days = Array(30).fill(null)
+  const days = Array(30).fill(null).map((_, i) => startDay + i).filter(day => day <= 66)
 
-  for (let i = 0; i < (endDay - startDay + 1); i++) {
-    days[i] = startDay + i
+  const handleDayClick = (day: number | null) => {
+    setSelectedDay(day)
+  }
+
+  const handleClose = () => {
+    setSelectedDay(null)
+  }
+
+  const handleSave = (evidence: Evidence) => {
+    setEvidence(evidence)
+    setSelectedDay(null)
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      <div className="grid grid-rows-6 grid-cols-5 gap-0">
-        {days.map((day, index) => (
-          <div
-            key={index}
-            className={cn(
-              "aspect-square relative flex items-center justify-center p-0.5",
-              day ? "cursor-pointer" : "pointer-events-none"
-            )}
-          >
-            {day && (
-              <button
-                onClick={() => toggleDay(day)}
-                className={cn(
-                  "w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-sm font-noto",
-                  "focus:outline-none focus:ring-2 focus:ring-burgundy-300",
-                  completed.includes(day)
-                    ? "bg-burgundy-600 text-white"
-                    : "bg-grey-100 text-burgundy-700"
-                )}
-              >
-                {day}
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
+    <>
+      <BaseMode 
+        days={days}
+        completed={completed}
+        toggleDay={handleDayClick}
+        currentPage={currentPage}
+      />
+
+      {selectedDay && challenges[selectedDay] && (
+        <ChallengeDetail
+          day={selectedDay}
+          title={challenges[selectedDay].title}
+          description={challenges[selectedDay].description}
+          onClose={handleClose}
+          onSave={handleSave}
+          savedEvidence={evidence[selectedDay]}
+        />
+      )}
+    </>
   )
 } 
