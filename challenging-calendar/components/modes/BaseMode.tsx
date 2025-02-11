@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from "react"
 import { cn } from "@/lib/utils"
 
 interface BaseModeProps {
@@ -18,6 +19,13 @@ interface Evidence {
 }
 
 export function BaseMode({ days, completed, toggleDay, currentPage = 1 }: BaseModeProps) {
+  const [selectedDay, setSelectedDay] = useState<number | null>(null)
+  const [evidence, setEvidence] = useState<Record<number, string>>(() => {
+    // Load saved evidence from localStorage
+    const saved = localStorage.getItem('mediumModeEvidence')
+    return saved ? JSON.parse(saved) : {}
+  })
+
   const handleSave = (evidenceString: string) => {
     if (selectedDay) {
       try {
