@@ -9,7 +9,17 @@ interface EasyModeProps {
   toggleDay: (day: number | null) => void
 }
 
-const challenges = {
+// Define the challenge type
+interface Challenge {
+  title: string
+  description: {
+    en: string
+    ko: string
+  }
+}
+
+// Define challenges as a Record type with number keys
+const challenges: Record<number, Challenge> = {
   1: {
     title: "Exercise",
     description: {
@@ -38,7 +48,7 @@ const challenges = {
       ko: "지금까지의 진행 상황을 검토하고 다음 단계를 계획하세요."
     }
   }
-} as const
+}
 
 // Add all days in between (4-20) with similar format
 for (let i = 4; i <= 20; i++) {
