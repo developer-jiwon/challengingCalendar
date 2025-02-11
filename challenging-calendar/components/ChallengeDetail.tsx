@@ -174,8 +174,15 @@ export function ChallengeDetail({
                 value={linkInput}
                 onChange={(e) => setLinkInput(e.target.value)}
                 placeholder="Enter URL (e.g., https://example.com)"
-                className="flex-1 px-3 py-1.5 text-sm rounded-lg bg-grey-50 border border-grey-200 focus:outline-none focus:ring-2 focus:ring-burgundy-300"
+                className={cn(
+                  "flex-1 px-3 py-1.5 text-base",
+                  "rounded-lg bg-grey-50 border border-grey-200",
+                  "focus:outline-none focus:ring-2 focus:ring-burgundy-300",
+                  "[appearance:none]",
+                  "font-size-16"
+                )}
                 autoFocus
+                style={{ fontSize: '16px' }}
               />
               <button
                 onClick={() => {
