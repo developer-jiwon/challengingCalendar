@@ -103,27 +103,29 @@ export function EasyMode({ completed, toggleDay }: EasyModeProps) {
 
   return (
     <>
-      <div className="w-full max-w-xl mx-auto px-4">
-        <div className="grid grid-rows-5 grid-cols-5">
-          {days.map((day, index) => (
-            <div
-              key={index}
-              className="p-2.5 flex items-center justify-center"
-            >
-              <button
-                onClick={() => handleDayClick(day)}
-                className={cn(
-                  "w-11 h-11 rounded-full flex items-center justify-center text-sm font-noto",
-                  "focus:outline-none focus:ring-1 focus:ring-burgundy-300",
-                  completed.includes(day)
-                    ? "bg-burgundy-600 text-white"
-                    : "bg-grey-100 text-burgundy-700"
-                )}
+      <div className="flex justify-center">
+        <div className="w-[400px] px-8">
+          <div className="grid grid-rows-5 grid-cols-5">
+            {days.map((day, index) => (
+              <div
+                key={index}
+                className="p-2 flex items-center justify-center"
               >
-                {day}
-              </button>
-            </div>
-          ))}
+                <button
+                  onClick={() => handleDayClick(day)}
+                  className={cn(
+                    "w-11 h-11 rounded-full flex items-center justify-center text-sm font-noto",
+                    "focus:outline-none focus:ring-1 focus:ring-burgundy-300",
+                    completed.includes(day)
+                      ? "bg-burgundy-600 text-white"
+                      : "bg-grey-100 text-burgundy-700"
+                  )}
+                >
+                  {day}
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

@@ -61,9 +61,9 @@ export default function ChallengeCalendar() {
     <div className="flex min-h-screen w-full relative font-lora">
       <Navigation difficulty={difficulty} />
       
-      <main className="flex-1">
+      <main className="w-full">
         <div className="min-h-screen w-full flex flex-col items-center justify-center">
-          <div className="w-full max-w-[1200px] px-4 sm:px-8 -ml-8">
+          <div className="flex flex-col items-center">
             <div className="flex justify-center mb-12">
               <div className="inline-flex gap-3 bg-white/30 backdrop-blur-[2px] p-1.5 rounded-full">
                 <button
@@ -158,11 +158,7 @@ export default function ChallengeCalendar() {
               </div>
             </div>
 
-            <div className="flex justify-center">
-              <div className="w-full max-w-4xl">
-                {renderMode()}
-              </div>
-            </div>
+            {renderMode()}
 
             {difficulty !== "easy" && totalPages > 1 && (
               <div className="flex justify-center mt-4">
