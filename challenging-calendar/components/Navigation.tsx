@@ -20,15 +20,26 @@ export function Navigation({ difficulty }: NavigationProps) {
 
   return (
     <>
-      {/* Background Overlay - Made more vivid */}
+      {/* Background Overlay with pointer events and transition */}
       <div 
         className={cn(
-          "fixed inset-0 bg-burgundy-100/40 backdrop-blur-sm transition-all duration-300",
+          "fixed inset-0 bg-burgundy-100/40 backdrop-blur-sm transition-all duration-300 z-40",
           isExpanded 
             ? "opacity-100 pointer-events-auto" 
             : "opacity-0 pointer-events-none"
         )}
         onClick={() => setIsExpanded(false)}
+      />
+
+      {/* Main content overlay to disable interactions */}
+      <div 
+        className={cn(
+          "fixed inset-0 transition-all duration-300 z-30",
+          isExpanded 
+            ? "pointer-events-auto bg-white/10" 
+            : "pointer-events-none bg-transparent"
+        )}
+        aria-hidden={!isExpanded}
       />
 
       {/* Navigation */}
