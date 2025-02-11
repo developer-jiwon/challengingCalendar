@@ -58,7 +58,19 @@ export default function ChallengeCalendar() {
   }
 
   return (
-    <div className="flex min-h-screen w-full relative font-lora">
+    <div className="flex min-h-screen w-full relative font-lora bg-gradient-to-br from-grey-50 to-burgundy-50">
+      {/* Enhanced animated background elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute w-[500px] h-[500px] bg-burgundy-100/20 rounded-full blur-3xl -top-48 -right-48 animate-float" />
+        <div className="absolute w-[300px] h-[300px] bg-burgundy-200/10 rounded-full blur-2xl bottom-0 left-1/4 animate-float-delayed" />
+        {/* Add sparkle effects */}
+        <div className="absolute top-1/4 left-1/3 w-2 h-2 bg-white rounded-full animate-sparkle" />
+        <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-white rounded-full animate-sparkle-delayed" />
+        {/* Add gradient lines */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-burgundy-100/20 to-transparent animate-slide" />
+        <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-burgundy-100/20 to-transparent animate-slide-delayed" />
+      </div>
+
       <Navigation difficulty={difficulty} />
       
       <main className="w-full">
@@ -75,24 +87,26 @@ export default function ChallengeCalendar() {
                     "relative py-2 px-4 sm:px-5 rounded-full transition-all duration-500",
                     "font-medium text-xs sm:text-sm whitespace-nowrap",
                     "group flex items-center gap-1.5 sm:gap-2",
+                    "overflow-hidden",
                     difficulty === "easy"
-                      ? "bg-white text-burgundy-600 shadow-md"
+                      ? "bg-white text-burgundy-600 shadow-lg"
                       : "text-grey-600 hover:bg-white/50"
                   )}
                 >
-                  <span className="font-noto">Easy</span>
+                  <span className="font-noto relative z-10">Easy</span>
                   <span className={cn(
-                    "text-[10px] px-1.5 py-0.5 rounded-full transition-colors",
+                    "text-[10px] px-1.5 py-0.5 rounded-full transition-colors relative z-10",
                     difficulty === "easy"
                       ? "bg-burgundy-50 text-burgundy-600"
                       : "bg-grey-100 text-grey-500"
                   )}>
                     21
                   </span>
+                  {/* Animated background */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-burgundy-50 to-burgundy-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  {/* Glow effect */}
                   {difficulty === "easy" && (
-                    <div className="absolute inset-0 -z-10 rounded-full animate-pulse-subtle">
-                      <div className="absolute inset-0 bg-white blur-sm" />
-                    </div>
+                    <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full" />
                   )}
                 </button>
 
