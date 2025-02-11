@@ -16,7 +16,7 @@ interface NavigationProps {
 }
 
 export function Navigation({ difficulty }: NavigationProps) {
-  const [isExpanded, setIsExpanded] = useState(true)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   return (
     <>
