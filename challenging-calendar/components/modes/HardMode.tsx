@@ -15,6 +15,15 @@ interface Evidence {
   [key: number]: string
 }
 
+// Add Challenge interface
+interface Challenge {
+  title: string
+  description: {
+    en: string
+    ko: string
+  }
+}
+
 export function HardMode({ completed, toggleDay, currentPage }: HardModeProps) {
   const [selectedDay, setSelectedDay] = useState<number | null>(null)
   const [evidence, setEvidence] = useState<Evidence>({})
@@ -77,7 +86,7 @@ export function HardMode({ completed, toggleDay, currentPage }: HardModeProps) {
   )
 }
 
-// Define challenges for hard mode
+// Now TypeScript knows about the Challenge type
 const challenges: Record<number, Challenge> = {
   1: {
     title: "Hard Challenge Day 1",
