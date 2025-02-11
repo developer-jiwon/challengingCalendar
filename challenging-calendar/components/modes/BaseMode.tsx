@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 
 interface BaseModeProps {
@@ -20,11 +20,20 @@ interface Evidence {
 
 export function BaseMode({ days, completed, toggleDay, currentPage = 1 }: BaseModeProps) {
   const [selectedDay, setSelectedDay] = useState<number | null>(null)
-  const [evidence, setEvidence] = useState<Record<number, string>>(() => {
-    // Load saved evidence from localStorage
+  const [evidence, setEvidence] = useState<Record<number, string>>({})
+
+  // Move localStorage operations to useEffect
+  useEffect(() => {
+    // Load saved evidence from localStorage on client-side only
     const saved = localStorage.getItem('mediumModeEvidence')
-    return saved ? JSON.parse(saved) : {}
-  })
+    if (saved) {
+      try {
+        setEvidence(JSON.parse(saved))
+      } catch (error) {
+        console.error('Failed to parse saved evidence:', error)
+      }
+    }
+  }, [])
 
   const handleSave = (evidenceString: string) => {
     if (selectedDay) {
@@ -32,10 +41,13 @@ export function BaseMode({ days, completed, toggleDay, currentPage = 1 }: BaseMo
         const evidenceData = JSON.parse(evidenceString) as Evidence
         const newEvidence = {
           ...evidence,
-          [selectedDay]: evidenceString // Store the full JSON string
+          [selectedDay]: evidenceString
         }
         setEvidence(newEvidence)
-        localStorage.setItem('mediumModeEvidence', JSON.stringify(newEvidence))
+        // Save to localStorage only on client-side
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('mediumModeEvidence', JSON.stringify(newEvidence))
+        }
         setSelectedDay(null)
       } catch (error) {
         console.error('Failed to parse evidence:', error)
