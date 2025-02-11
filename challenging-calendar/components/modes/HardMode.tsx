@@ -23,7 +23,12 @@ export function HardMode({ completed, toggleDay, currentPage }: HardModeProps) {
   const days = Array(30).fill(null).map((_, i) => startDay + i).filter(day => day <= 90)
 
   const handleDayClick = (day: number | null) => {
-    setSelectedDay(day)
+    if (!day) return
+    if (completed.includes(day)) {
+      toggleDay(day)
+    } else {
+      setSelectedDay(day)
+    }
   }
 
   const handleClose = () => {

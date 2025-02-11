@@ -79,7 +79,8 @@ export function EasyMode({ completed, toggleDay }: EasyModeProps) {
     }
   }, [])
 
-  const handleDayClick = (day: number) => {
+  const handleDayClick = (day: number | null) => {
+    if (!day) return
     if (completed.includes(day)) {
       toggleDay(day)
     } else {

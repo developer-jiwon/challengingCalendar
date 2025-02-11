@@ -19,7 +19,12 @@ export function MediumMode({ completed, toggleDay, currentPage }: MediumModeProp
   const days = Array(30).fill(null).map((_, i) => startDay + i).filter(day => day <= 66)
 
   const handleDayClick = (day: number | null) => {
-    setSelectedDay(day)
+    if (!day) return
+    if (completed.includes(day)) {
+      toggleDay(day)
+    } else {
+      setSelectedDay(day)
+    }
   }
 
   const handleClose = () => {
