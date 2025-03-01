@@ -10,12 +10,14 @@ import {
   BarChart2
 } from "lucide-react"
 import { useState } from "react"
+import { Difficulty, Category } from "@/lib/activities"
 
 interface NavigationProps {
-  difficulty: string
+  difficulty: Difficulty
+  category: Category
 }
 
-export function Navigation({ difficulty }: NavigationProps) {
+export function Navigation({ difficulty, category }: NavigationProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
@@ -109,6 +111,10 @@ export function Navigation({ difficulty }: NavigationProps) {
             <div className="mt-auto p-3 bg-grey-50 rounded-xl">
               <p className="text-xs text-grey-500 mb-1">Current Mode</p>
               <p className="font-noto text-burgundy-700 capitalize">{difficulty} Mode</p>
+              <p className="text-xs text-grey-500 mt-2 mb-1">Category</p>
+              <p className="font-noto text-burgundy-700 capitalize">
+                {category === 'quality-of-life' ? 'Quality of Life' : category}
+              </p>
             </div>
           )}
         </div>

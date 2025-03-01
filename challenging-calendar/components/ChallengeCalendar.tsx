@@ -6,21 +6,35 @@ import { EasyMode } from "./modes/EasyMode"
 import { MediumMode } from "./modes/MediumMode"
 import { HardMode } from "./modes/HardMode"
 import { Navigation } from "./Navigation"
-
-type Difficulty = "easy" | "medium" | "hard"
+import { Category, Difficulty } from "@/lib/activities"
 
 interface CompletedDays {
-  easy: number[]
-  medium: number[]
-  hard: number[]
+  mindfulness: {
+    easy: number[]
+    medium: number[]
+    hard: number[]
+  }
+  'quality-of-life': {
+    easy: number[]
+    medium: number[]
+    hard: number[]
+  }
 }
 
 export default function ChallengeCalendar() {
   const [completed, setCompleted] = useState<CompletedDays>({
-    easy: [],
-    medium: [],
-    hard: []
+    mindfulness: {
+      easy: [],
+      medium: [],
+      hard: []
+    },
+    'quality-of-life': {
+      easy: [],
+      medium: [],
+      hard: []
+    }
   })
+  const [category, setCategory] = useState<Category>("mindfulness")
   const [difficulty, setDifficulty] = useState<Difficulty>("easy")
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -34,9 +48,12 @@ export default function ChallengeCalendar() {
     if (day === null) return
     setCompleted(prev => ({
       ...prev,
-      [difficulty]: prev[difficulty].includes(day)
-        ? prev[difficulty].filter(d => d !== day)
-        : [...prev[difficulty], day]
+      [category]: {
+        ...prev[category],
+        [difficulty]: prev[category][difficulty].includes(day)
+          ? prev[category][difficulty].filter(d => d !== day)
+          : [...prev[category][difficulty], day]
+      }
     }))
   }
 
@@ -45,11 +62,25 @@ export default function ChallengeCalendar() {
   const renderMode = () => {
     switch (difficulty) {
       case "easy":
-        return <EasyMode completed={completed.easy} toggleDay={toggleDay} />
+        return <EasyMode 
+          category={category}
+          completed={completed[category].easy} 
+          toggleDay={toggleDay} 
+        />
       case "medium":
-        return <MediumMode completed={completed.medium} toggleDay={toggleDay} currentPage={currentPage} />
+        return <MediumMode 
+          category={category}
+          completed={completed[category].medium} 
+          toggleDay={toggleDay} 
+          currentPage={currentPage} 
+        />
       case "hard":
-        return <HardMode completed={completed.hard} toggleDay={toggleDay} currentPage={currentPage} />
+        return <HardMode 
+          category={category}
+          completed={completed[category].hard} 
+          toggleDay={toggleDay} 
+          currentPage={currentPage} 
+        />
     }
   }
 
@@ -71,11 +102,52 @@ export default function ChallengeCalendar() {
         <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-burgundy-100/20 to-transparent animate-slide-delayed" />
       </div>
 
-      <Navigation difficulty={difficulty} />
+      <Navigation difficulty={difficulty} category={category} />
       
       <main className="w-full">
         <div className="min-h-screen w-full flex flex-col items-center justify-center">
           <div className="flex flex-col items-center w-full max-w-[1400px] mx-auto px-4 md:px-16">
+            {/* Category Selection */}
+            <div className="flex justify-center mb-8">
+              <div className="inline-flex gap-3 md:gap-4 bg-white/30 backdrop-blur-[2px] p-1.5 md:p-2 rounded-full">
+                <button
+                  onClick={() => setCategory("mindfulness")}
+                  className={cn(
+                    "relative py-2 px-4 sm:px-5 rounded-full transition-all duration-500",
+                    "font-medium text-xs sm:text-sm whitespace-nowrap",
+                    "group flex items-center gap-1.5 sm:gap-2",
+                    "overflow-hidden",
+                    category === "mindfulness"
+                      ? "bg-white text-burgundy-600 shadow-lg"
+                      : "text-grey-600 hover:bg-white/50"
+                  )}
+                >
+                  <span className="font-noto relative z-10">Mindfulness</span>
+                  {category === "mindfulness" && (
+                    <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full" />
+                  )}
+                </button>
+
+                <button
+                  onClick={() => setCategory("quality-of-life")}
+                  className={cn(
+                    "relative py-2 px-4 sm:px-5 rounded-full transition-all duration-500",
+                    "font-medium text-xs sm:text-sm whitespace-nowrap",
+                    "group flex items-center gap-1.5 sm:gap-2",
+                    category === "quality-of-life"
+                      ? "bg-white text-burgundy-600 shadow-lg"
+                      : "text-grey-600 hover:bg-white/50"
+                  )}
+                >
+                  <span className="font-noto relative z-10">Quality of Life</span>
+                  {category === "quality-of-life" && (
+                    <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Difficulty Selection */}
             <div className="flex justify-center mb-12 md:mb-16">
               <div className="inline-flex gap-3 md:gap-4 bg-white/30 backdrop-blur-[2px] p-1.5 md:p-2 rounded-full">
                 <button

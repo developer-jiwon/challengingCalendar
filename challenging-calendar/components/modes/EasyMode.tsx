@@ -4,9 +4,10 @@ import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { ChallengeDetail } from "../ChallengeDetail"
 import { BaseMode } from "./BaseMode"
-import { Challenge, easyModeActivities } from "@/lib/activities"
+import { Challenge, activities, Category } from "@/lib/activities"
 
 interface EasyModeProps {
+  category: Category
   completed: number[]
   toggleDay: (day: number | null) => void
 }
@@ -15,18 +16,18 @@ interface Evidence {
   [key: number]: string
 }
 
-export function EasyMode({ completed, toggleDay }: EasyModeProps) {
+export function EasyMode({ category, completed, toggleDay }: EasyModeProps) {
   const [selectedDay, setSelectedDay] = useState<number | null>(null)
   const [evidence, setEvidence] = useState<Evidence>({})
   const days = Array(30).fill(null).map((_, i) => i + 1)
 
   // Load saved evidence from localStorage on mount
   useEffect(() => {
-    const savedEvidence = localStorage.getItem('easyModeEvidence')
+    const savedEvidence = localStorage.getItem(`${category}EasyModeEvidence`)
     if (savedEvidence) {
       setEvidence(JSON.parse(savedEvidence))
     }
-  }, [])
+  }, [category])
 
   const handleDayClick = (day: number | null) => {
     if (!day) return
@@ -48,12 +49,15 @@ export function EasyMode({ completed, toggleDay }: EasyModeProps) {
         [selectedDay]: dayEvidence
       }
       setEvidence(newEvidence)
-      localStorage.setItem('easyModeEvidence', JSON.stringify(newEvidence))
+      localStorage.setItem(`${category}EasyModeEvidence`, JSON.stringify(newEvidence))
     }
   }
 
+  // Get activities for the current category
+  const categoryActivities = activities[category].easy
+
   // Add this console log to debug
-  console.log('Selected day activity:', selectedDay && easyModeActivities[selectedDay])
+  console.log('Selected day activity:', selectedDay && categoryActivities[selectedDay])
 
   return (
     <>
@@ -63,11 +67,11 @@ export function EasyMode({ completed, toggleDay }: EasyModeProps) {
         toggleDay={handleDayClick}
       />
 
-      {selectedDay && easyModeActivities[selectedDay] && (
+      {selectedDay && categoryActivities[selectedDay] && (
         <ChallengeDetail
           day={selectedDay}
-          title={easyModeActivities[selectedDay].title}
-          description={easyModeActivities[selectedDay].description}
+          title={categoryActivities[selectedDay].title}
+          description={categoryActivities[selectedDay].description}
           onClose={handleClose}
           onSave={handleSave}
           savedEvidence={evidence[selectedDay]}

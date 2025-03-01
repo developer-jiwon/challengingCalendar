@@ -4,8 +4,10 @@ import { cn } from "@/lib/utils"
 import { useState, useEffect } from "react"
 import { BaseMode } from "./BaseMode"
 import { ChallengeDetail } from "@/components/ChallengeDetail"
+import { Category, activities } from "@/lib/activities"
 
 interface HardModeProps {
+  category: Category
   completed: number[]
   toggleDay: (day: number | null) => void
   currentPage: number
@@ -24,10 +26,17 @@ interface Challenge {
   }
 }
 
-export function HardMode({ completed, toggleDay, currentPage }: HardModeProps) {
+export function HardMode({ category, completed, toggleDay, currentPage }: HardModeProps) {
   const [selectedDay, setSelectedDay] = useState<number | null>(null)
   const [evidence, setEvidence] = useState<Evidence>({})
   
+  useEffect(() => {
+    const savedEvidence = localStorage.getItem(`${category}HardModeEvidence`)
+    if (savedEvidence) {
+      setEvidence(JSON.parse(savedEvidence))
+    }
+  }, [category])
+
   const startDay = (currentPage - 1) * 30 + 1
   const days = Array(30).fill(null).map((_, i) => startDay + i).filter(day => day <= 90)
 
@@ -51,17 +60,12 @@ export function HardMode({ completed, toggleDay, currentPage }: HardModeProps) {
         [selectedDay]: dayEvidence
       }
       setEvidence(newEvidence)
-      localStorage.setItem('hardModeEvidence', JSON.stringify(newEvidence))
+      localStorage.setItem(`${category}HardModeEvidence`, JSON.stringify(newEvidence))
     }
   }
 
-  // Load saved evidence from localStorage on mount
-  useEffect(() => {
-    const savedEvidence = localStorage.getItem('hardModeEvidence')
-    if (savedEvidence) {
-      setEvidence(JSON.parse(savedEvidence))
-    }
-  }, [])
+  // Get activities for the current category
+  const categoryActivities = activities[category].hard
 
   return (
     <>
@@ -72,11 +76,11 @@ export function HardMode({ completed, toggleDay, currentPage }: HardModeProps) {
         currentPage={currentPage}
       />
 
-      {selectedDay && challenges[selectedDay] && (
+      {selectedDay && categoryActivities[selectedDay] && (
         <ChallengeDetail
           day={selectedDay}
-          title={challenges[selectedDay].title}
-          description={challenges[selectedDay].description}
+          title={categoryActivities[selectedDay].title}
+          description={categoryActivities[selectedDay].description}
           onClose={handleClose}
           onSave={handleSave}
           savedEvidence={evidence[selectedDay]}

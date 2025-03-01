@@ -4,8 +4,10 @@ import { cn } from "@/lib/utils"
 import { useState, useEffect } from "react"
 import { BaseMode } from "./BaseMode"
 import { ChallengeDetail } from "@/components/ChallengeDetail"
+import { Category, activities } from "@/lib/activities"
 
 interface MediumModeProps {
+  category: Category
   completed: number[]
   toggleDay: (day: number | null) => void
   currentPage: number
@@ -23,16 +25,16 @@ interface Challenge {
   }
 }
 
-export function MediumMode({ completed, toggleDay, currentPage }: MediumModeProps) {
+export function MediumMode({ category, completed, toggleDay, currentPage }: MediumModeProps) {
   const [selectedDay, setSelectedDay] = useState<number | null>(null)
   const [evidence, setEvidence] = useState<Evidence>({})
   
   useEffect(() => {
-    const savedEvidence = localStorage.getItem('mediumModeEvidence')
+    const savedEvidence = localStorage.getItem(`${category}MediumModeEvidence`)
     if (savedEvidence) {
       setEvidence(JSON.parse(savedEvidence))
     }
-  }, [])
+  }, [category])
 
   const startDay = (currentPage - 1) * 30 + 1
   const days = Array(30).fill(null).map((_, i) => startDay + i).filter(day => day <= 66)
@@ -57,9 +59,12 @@ export function MediumMode({ completed, toggleDay, currentPage }: MediumModeProp
         [selectedDay]: dayEvidence
       }
       setEvidence(newEvidence)
-      localStorage.setItem('mediumModeEvidence', JSON.stringify(newEvidence))
+      localStorage.setItem(`${category}MediumModeEvidence`, JSON.stringify(newEvidence))
     }
   }
+
+  // Get activities for the current category
+  const categoryActivities = activities[category].medium
 
   return (
     <>
@@ -70,11 +75,11 @@ export function MediumMode({ completed, toggleDay, currentPage }: MediumModeProp
         currentPage={currentPage}
       />
 
-      {selectedDay && challenges[selectedDay] && (
+      {selectedDay && categoryActivities[selectedDay] && (
         <ChallengeDetail
           day={selectedDay}
-          title={challenges[selectedDay].title}
-          description={challenges[selectedDay].description}
+          title={categoryActivities[selectedDay].title}
+          description={categoryActivities[selectedDay].description}
           onClose={handleClose}
           onSave={handleSave}
           savedEvidence={evidence[selectedDay]}
