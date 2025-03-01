@@ -32,7 +32,7 @@ export function ChallengeDetail({
   description, 
   onClose, 
   onSave,
-  savedEvidence 
+  savedEvidence = ''
 }: ChallengeDetailProps) {
   const MAX_CHARS = 2000
 
@@ -103,7 +103,7 @@ export function ChallengeDetail({
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-2xl w-full max-w-lg">
+      <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
         {/* Header Section */}
         <div className="p-6">
           <div className="text-center mb-4">
@@ -114,7 +114,7 @@ export function ChallengeDetail({
           {/* Challenge Description */}
           <div className="mt-6 text-center">
             <p className="text-lg text-grey-700 mb-2">{description.en}</p>
-            <p className="text-grey-600 text-sm">{description.ko}</p>
+            <p className="text-grey-600 text-sm" style={{ whiteSpace: 'pre-line' }}>{description.ko}</p>
           </div>
         </div>
 

@@ -25,7 +25,7 @@ export default function ChallengeCalendar() {
   const [currentPage, setCurrentPage] = useState(1)
 
   const difficultyDays = {
-    easy: 21,
+    easy: 30,
     medium: 66,
     hard: 90
   }
@@ -100,7 +100,7 @@ export default function ChallengeCalendar() {
                       ? "bg-burgundy-50 text-burgundy-600"
                       : "bg-grey-100 text-grey-500"
                   )}>
-                    21
+                    30
                   </span>
                   {/* Animated background */}
                   <div className="absolute inset-0 bg-gradient-to-r from-burgundy-50 to-burgundy-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
