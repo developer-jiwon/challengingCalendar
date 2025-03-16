@@ -113,7 +113,7 @@ export function Navigation({ difficulty, category }: NavigationProps) {
               <p className="font-noto text-burgundy-700 capitalize">{difficulty} Mode</p>
               <p className="text-xs text-grey-500 mt-2 mb-1">Category</p>
               <p className="font-noto text-burgundy-700 capitalize">
-                {category === 'quality-of-life' ? 'Quality of Life' : category}
+                {category === 'introspective' ? 'Introspective' : category}
               </p>
             </div>
           )}

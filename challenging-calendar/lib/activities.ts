@@ -1,6 +1,8 @@
-import easyModeData from '@/data/easy-mode-activities.js'
+import easyModeData from '@/data/mindfulness/easy-mode-activities.js'
+import introspectiveData from '@/data/introspective/easy-mode-activities.js'
 
-console.log('Loaded activities:', easyModeData)
+console.log('Loaded mindfulness activities:', easyModeData)
+console.log('Loaded introspective activities:', introspectiveData)
 
 export interface Challenge {
   title: string
@@ -11,7 +13,7 @@ export interface Challenge {
 }
 
 // Define categories and difficulty levels
-export type Category = 'mindfulness' | 'quality-of-life'
+export type Category = 'mindfulness' | 'introspective'
 export type Difficulty = 'easy' | 'medium' | 'hard'
 
 // Add a type for the imported data
@@ -50,10 +52,29 @@ export const activities: CategoryActivities = {
     medium: generatePlaceholderActivities(66, 'mindfulness', 'medium'),
     hard: generatePlaceholderActivities(90, 'mindfulness', 'hard')
   },
-  'quality-of-life': {
-    easy: generatePlaceholderActivities(30, 'quality-of-life', 'easy'),
-    medium: generatePlaceholderActivities(66, 'quality-of-life', 'medium'),
-    hard: generatePlaceholderActivities(90, 'quality-of-life', 'hard')
+  'introspective': {
+    easy: {
+      ...introspectiveData as unknown as Record<number, Challenge>,
+      
+      // Only generate placeholder activities for days that don't exist in the imported data
+      ...Array.from({ length: 30 }, (_, i) => i + 1)
+        .filter(day => {
+          const key = day.toString();
+          return !(key in introspectiveData) || !(introspectiveData as ActivityData)[key]?.title;
+        })
+        .reduce((acc, day) => ({
+          ...acc,
+          [day]: {
+            title: `Day ${day}`,
+            description: {
+              en: `Complete your day ${day} introspective challenge`,
+              ko: `${day}일차 자기성찰 도전 과제를 완료하세요`
+            }
+          }
+        }), {})
+    },
+    medium: generatePlaceholderActivities(66, 'introspective', 'medium'),
+    hard: generatePlaceholderActivities(90, 'introspective', 'hard')
   }
 }
 
@@ -80,7 +101,7 @@ function generatePlaceholderActivities(
 function getKoreanCategory(category: string): string {
   const translations: Record<string, string> = {
     mindfulness: '마음챙김',
-    'quality-of-life': '삶의 질 향상'
+    'introspective': '자기성찰'
   }
   return translations[category] || category
 }
@@ -100,5 +121,7 @@ export const easyModeActivities = activities.mindfulness.easy
 // Add console logs to debug
 console.log('Loaded activities for mindfulness easy mode:', Object.keys(activities.mindfulness.easy).length, 'days')
 console.log('Day 4 activity:', activities.mindfulness.easy[4])
+
+export default activities
   
   

@@ -152,14 +152,14 @@ export function ChallengeDetail({
             />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-grey-50 hover:bg-grey-100 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-burgundy-600 text-white hover:bg-burgundy-700 rounded-lg transition-colors"
             >
               <Image className="w-4 h-4" />
               Add Image
             </button>
             <button
               onClick={() => setIsAddingLink(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-grey-50 hover:bg-grey-100 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-burgundy-600 text-white hover:bg-burgundy-700 rounded-lg transition-colors"
             >
               <LinkIcon className="w-4 h-4" />
               Add Link

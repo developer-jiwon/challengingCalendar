@@ -14,7 +14,7 @@ interface CompletedDays {
     medium: number[]
     hard: number[]
   }
-  'quality-of-life': {
+  'introspective': {
     easy: number[]
     medium: number[]
     hard: number[]
@@ -28,7 +28,7 @@ export default function ChallengeCalendar() {
       medium: [],
       hard: []
     },
-    'quality-of-life': {
+    'introspective': {
       easy: [],
       medium: [],
       hard: []
@@ -129,18 +129,18 @@ export default function ChallengeCalendar() {
                 </button>
 
                 <button
-                  onClick={() => setCategory("quality-of-life")}
+                  onClick={() => setCategory("introspective")}
                   className={cn(
                     "relative py-2 px-4 sm:px-5 rounded-full transition-all duration-500",
                     "font-medium text-xs sm:text-sm whitespace-nowrap",
                     "group flex items-center gap-1.5 sm:gap-2",
-                    category === "quality-of-life"
+                    category === "introspective"
                       ? "bg-white text-burgundy-600 shadow-lg"
                       : "text-grey-600 hover:bg-white/50"
                   )}
                 >
-                  <span className="font-noto relative z-10">Quality of Life</span>
-                  {category === "quality-of-life" && (
+                  <span className="font-noto relative z-10">Introspective</span>
+                  {category === "introspective" && (
                     <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full" />
                   )}
                 </button>
