@@ -35,6 +35,7 @@ export function ChallengeDetail({
   savedEvidence = ''
 }: ChallengeDetailProps) {
   const MAX_CHARS = 2000
+  const [language, setLanguage] = useState<'ko' | 'en'>('ko')
 
   // Parse saved evidence if it exists
   const parseSavedEvidence = () => {
@@ -111,10 +112,43 @@ export function ChallengeDetail({
             <p className="text-grey-600 text-sm mt-1">Your challenge for today</p>
           </div>
 
+          {/* Language Toggle */}
+          <div className="flex justify-center gap-2 mb-4">
+            <button
+              onClick={() => setLanguage('ko')}
+              className={cn(
+                "px-3 py-1 rounded-lg text-sm font-medium transition-colors",
+                language === 'ko' 
+                  ? "bg-burgundy-600 text-white" 
+                  : "bg-grey-100 text-grey-600 hover:bg-grey-200"
+              )}
+            >
+              Ko
+            </button>
+            <button
+              onClick={() => setLanguage('en')}
+              className={cn(
+                "px-3 py-1 rounded-lg text-sm font-medium transition-colors",
+                language === 'en' 
+                  ? "bg-burgundy-600 text-white" 
+                  : "bg-grey-100 text-grey-600 hover:bg-grey-200"
+              )}
+            >
+              En
+            </button>
+          </div>
+
           {/* Challenge Description */}
           <div className="mt-6 text-center">
-            <p className="text-lg text-grey-700 mb-2">{description.en}</p>
-            <p className="text-grey-600 text-sm" style={{ whiteSpace: 'pre-line' }}>{description.ko}</p>
+            {language === 'en' ? (
+              <p className="text-lg text-grey-700 mb-2" style={{ whiteSpace: 'pre-line' }}>
+                {description.en}
+              </p>
+            ) : (
+              <p className="text-grey-600 text-sm" style={{ whiteSpace: 'pre-line' }}>
+                {description.ko}
+              </p>
+            )}
           </div>
         </div>
 
